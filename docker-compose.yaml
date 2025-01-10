@@ -1,0 +1,16 @@
+# run with docker-compose build and then docker-compose up
+
+version: '1'
+services:
+  dyno-backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: dyno-backend
+    # command: sh -c "python3 cei_backend/manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    # command: "0.0.0.0:8000"
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"

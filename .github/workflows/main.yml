@@ -1,0 +1,54 @@
+on: [push]
+
+jobs:
+  # flake8_lint_job:
+  #   runs-on: ubuntu-latest
+  #   name: Lint
+  #   steps:
+  #     - name: Check out source repository
+  #       uses: actions/checkout@v4
+  #     - name: Set up python environment
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.11'
+      # - name: flake8 Lint
+      #   uses: py-actions/flake8@v2
+      #   with:
+      #     max-line-length: '100'
+      #     ignore: 'E201,E203,E701,W503'
+          
+  docker_test_job:
+    runs-on: ubuntu-latest
+    name: A job to run docker compose services
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+
+      # checkout out docker compose action
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: hoverkraft-tech/compose-action@v1.5.1
+        with:
+          compose-file: "./docker-compose.yaml"
+      # - name: Curl the debug endpoint
+      #   run: conda run -n cei-backend python ./curl_test.py
+      #  run: |
+      #    chmod +x ./docker_running_test.sh
+      #    ./docker_running_test.sh
+      # - uses: jannekem/run-python-script-action@v1
+      #   with:
+      #     script: |
+      #       import os
+      #       print("Directory contents:")
+      #       for f in os.listdir():
+      #           print(f)
+      - name: setup conda env
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: dyno
+          environment-file: environment.yml
+      - name: Run unittest
+        run: python -m unittest discover -s ./backend -p "test_*.py"
+      # - name: run integration tests
+      #   run: conda run -n cei-backend python ./container_running_test.py
+      

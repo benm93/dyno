@@ -1,0 +1,7 @@
+name: dyno
+
+dependencies:
+- pip
+- pip:
+  - fastapi[standard]
+  - uvicorn
