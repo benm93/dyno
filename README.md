@@ -10,21 +10,6 @@ The user can specify the max distance for this search. This is the maximum Hammi
 
 This application is packaged and deployed using Docker, Github Actions, and Amazon ECS.
 
-## To Do
-- [x] Write endpoints which accepts file upload.
-- [x] Parse file into some data structure.
-- [x] Write search endpoint (full and hamming).
-- [x] Implement search algo.
-- [ ] Create a UI.
-- [x] Set up tests.
-- [x] Set up Actions.
-- [x] Deploy.
-- [ ] Discard file and return error code if file is not in FASTA format or is excessively large.
-- [ ] Add comments / improve readme / tidy up api docs.
-- [ ] Optimize.
-- [x] Add Deploy action.
-- [x] Include launch.json and settings.json.
-
 ## Scope
 Due to time constraints, I chose to leave out several components:
 - Domain name / SSL certificate setup in Route 53

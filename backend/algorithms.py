@@ -12,7 +12,7 @@ class Sequence:
     location: str
     gb_key: str
     sequence: str
-
+    id: int = 0
 
 class Sequences:
 
@@ -55,11 +55,13 @@ class Sequences:
                         item = item[:-1]
                     k_v = item.split('=')
                     field_dict[k_v[0]] = k_v[1]
-                s = Sequence(name, field_dict['gene'], field_dict['locus_tag'], field_dict['db_xref'], field_dict['protein'], field_dict['protein_id'], field_dict['location'], field_dict['gb_key'], field_dict['sequence'])
+                s = Sequence(name, field_dict['gene'], field_dict['locus_tag'],
+                    field_dict['db_xref'], field_dict['protein'], 
+                    field_dict['protein_id'], field_dict['location'], field_dict['gbkey'],
+                    field_dict['sequence'])
                 current_sequence = s
             else:
                 current_sequence_str = current_sequence_str + line
-
 
 
 class DynoLibrary:
@@ -76,13 +78,28 @@ class DynoLibrary:
     def search(sequences: Sequences, target, max_distance=0):
         # search sequences for target (exact or hamming)
         # think about optimizations like using a db or building an index from scratch
+        def serialize_sequence(seq: Sequence):
+            output = {}
+            output['seq_id'] = seq.seq_id
+            output['gene'] = seq.gene
+            output['locus_tag'] = seq.locus_tag
+            output['db_xref'] = seq.db_xref
+            output['protein'] = seq.protein
+            output['protein_id'] = seq.protein_id
+            output['location'] = seq.location
+            output['gb_key'] = seq.gb_key
+            output['sequence'] = seq.sequence
+            output['id'] = 0
+            return output
+
         matches = []
         if max_distance == 0:
+            # exact matches
             for sequence in sequences.sequences:
                 if target in sequence.sequence:
-                    matches.append(sequence.seq_id)
+                    matches.append(serialize_sequence(sequence))
         elif max_distance > 0:
-            # hamming check
+            # hamming matches
             for sequence in sequences.sequences:
                 sequence_str = sequence.sequence
                 # calculate hamming distance
@@ -98,7 +115,7 @@ class DynoLibrary:
                             distance += 1
                         count += 1
                     if distance <= max_distance:
-                        matches.append(sequence.seq_id)
+                        matches.append(serialize_sequence(sequence))
                         break
                     start += 1
                     end += 1

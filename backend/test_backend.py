@@ -51,14 +51,20 @@ class TestBackend(unittest.TestCase):
         s = Sequences(f.read())
         target = 'AGGAGGCGGAACAACCCAGTCAGCAATCAGAAGACGGAGTAGACGATTTTTTACAACAAGTAAGAGAT'
         results = DynoLibrary.search(s, target)
-        self.assertTrue('lcl|NC_031450.1_cds_YP_009310055.1_4' in results)
+        seq_ids = []
+        for result in results:
+            seq_ids.append(result['seq_id'])
+        self.assertTrue('lcl|NC_031450.1_cds_YP_009310055.1_4' in seq_ids)
     
     def test_search_hamming(self):
         f = open('Parvoviridae_full_130_refseq_sequence.txt', 'rb')
         s = Sequences(f.read())
         target = 'AGGAGGCGGAACAACCCAGTCAGCAATCAGAAGACGGAGTAGACGATTTTTTACAACAAGTAAGAGGT'
         results = DynoLibrary.search(s, target, 1)
-        self.assertTrue('lcl|NC_031450.1_cds_YP_009310055.1_4' in results)
+        seq_ids = []
+        for result in results:
+            seq_ids.append(result['seq_id'])
+        self.assertTrue('lcl|NC_031450.1_cds_YP_009310055.1_4' in seq_ids)
 
         
 
